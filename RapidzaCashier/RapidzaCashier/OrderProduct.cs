@@ -8,17 +8,17 @@ namespace RapidzaCashier
 {
     class OrderProduct
     {
-        public Product product { get; }
-        public int count { get; set; }
+        public Product Product { get; }
+        public int Count { get; set; }
 
         public OrderProduct(Product product)
         {
-            this.product = product;
+            this.Product = product;
         }
 
         public OrderProduct(Product product, int count) :this(product)
         {
-            this.count = count;
+            this.Count = count;
         }
     }
 }
