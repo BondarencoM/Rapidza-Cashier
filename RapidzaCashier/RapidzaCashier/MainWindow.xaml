@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RapidzaCashier"
         mc:Ignorable="d"
-        Title="Rapidza: Cashier" Height="450" Width="800"
+        Title="Rapidza: Cashier" 
+        Height="500" Width="650"
+        MinHeight="450" MinWidth="650"
         Loaded="Window_Loaded">
     <StackPanel Margin="15 0">
         <Grid>
@@ -25,11 +27,30 @@
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
-                <Grid Height="300" Background="#eee" >
-                    <TextBlock  FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        Add here: <LineBreak/> pizza selection
-                    </TextBlock>
-                </Grid>
+                <ListView  MinHeight="300" x:Name="lwProductsList"
+                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel  >
+                                <Image Source="{Binding Image}" Width="100" Height="75" />
+                                <StackPanel Orientation="Horizontal" >
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="{Binding PriceString}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel  HorizontalAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
                 <Grid Margin="0 10">
                     <Grid.ColumnDefinitions >
                         <ColumnDefinition Width="10*"/>
@@ -40,12 +61,15 @@
                         <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="4*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" />
-                    <Button Grid.Column="2" Content="+" />
-                    <TextBox Grid.Column="3" />
-                    <Button Grid.Column="4" Content="-" />
+                    <TextBox x:Name="tbSearchProduct" Grid.Column="0" />
+                    <Button x:Name="btnDecrementQuantity" Click="BtnDecrementQuantity_Click"
+                            Grid.Column="2" Content="-" />
+                    <TextBox x:Name="tbProductQuantity" Grid.Column="3" />
+                    <Button x:Name="btnIncrementQuantity" Click="BtnIncrementQuantity_Click"
+                            Grid.Column="4" Content="+" />
 
-                    <Button Grid.Column="7" Content="Add" Margin="10 0 0 0" />
+                    <Button x:Name="btnAddProductToOrder" Grid.Column="7" Content="Add" 
+                            Margin="10 0 0 0" IsDefault="True" Click="BtnAddProductToOrder_Click" />
 
                 </Grid>
             </StackPanel>
@@ -60,11 +84,31 @@
                         <TextBox Grid.Column="1" />
                     </Grid> 
                 </Border>
-                <Grid Height="200" Background="#eee">
-                    <TextBlock  FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        Add here: <LineBreak/> Ordered items list
-                    </TextBlock>
-                </Grid>
+                <ListBox x:Name="lbProductsOrdered" MinHeight="200">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <Border BorderThickness="1" BorderBrush="Gray" Padding="2">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Key.Name}" />
+                                        <TextBlock Text="{Binding Value}" />
+                                    </StackPanel>
+                                </Border>
+                                
+                                <Button Grid.Column="1" Content="X" Padding="3 0" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
                 <Grid  Margin="3 7">
                     <Button HorizontalAlignment="Right" Content="Submit" FontSize="20" Padding="7 3" />
                 </Grid>

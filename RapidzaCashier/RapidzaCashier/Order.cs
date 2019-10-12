@@ -12,7 +12,7 @@ namespace RapidzaCashier
         /// Dictionarry that maps every product present in the order 
         /// to the ammount of portions ordered 
         /// </summary>
-        private IDictionary<Product, int> products;
+        public IDictionary<Product, int> products;
 
         public double TotalPrice => products.Sum(orderItem => orderItem.Value * orderItem.Key.Price);
 

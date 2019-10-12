@@ -11,6 +11,7 @@ namespace RapidzaCashier
         public string Name { get; }
         public string Image { get; }
         public double Price { get; }
+        public string PriceString { get => Price + "€"; }
 
         public Product(string name, string image, double price)
         {
@@ -20,9 +21,8 @@ namespace RapidzaCashier
         }
         public Product(string name, double price)
         {
-            throw new NotImplementedException("this constructor is not yet implemented");
             Name = name;
-            Image = "Insert here path to default image";
+            Image = "/res/no image available .png";
             Price = price;
         }
     }
