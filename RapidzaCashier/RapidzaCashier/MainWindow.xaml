@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:RapidzaCashier"
         mc:Ignorable="d"
         Title="Rapidza: Cashier" 
-        Height="500" Width="650"
-        MinHeight="450" MinWidth="650"
+        Height="650" Width="700"
+        MinHeight="650" MinWidth="700"
         Loaded="Window_Loaded">
     <StackPanel Margin="15 0">
         <Grid>
@@ -22,27 +22,32 @@
         </Grid>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="10*" />
                 <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="5*" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <ListView  MinHeight="300" x:Name="lwProductsList"
                            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel  >
-                                <Image Source="{Binding Image}" Width="100" Height="75" />
-                                <StackPanel Orientation="Horizontal" >
-                                    <TextBlock Text="{Binding Name}" />
-                                    <TextBlock Text="{Binding PriceString}" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition SharedSizeGroup="SharedGroup" />
+                                </Grid.RowDefinitions>
+                                <StackPanel>
+                                    <Image Source="{Binding Image}" Width="120" Height="90" />
+                                    <StackPanel Orientation="Horizontal" >
+                                        <TextBlock TextWrapping="Wrap" MaxWidth="110" Text="{Binding Name}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding PriceString}" />
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
+                            </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel  HorizontalAlignment="Center" />
+                            <WrapPanel  HorizontalAlignment="Center" Grid.IsSharedSizeScope="True" />
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
                     <ListView.ItemContainerStyle>
@@ -64,7 +69,7 @@
                     <TextBox x:Name="tbSearchProduct" Grid.Column="0" />
                     <Button x:Name="btnDecrementQuantity" Click="BtnDecrementQuantity_Click"
                             Grid.Column="2" Content="-" />
-                    <TextBox x:Name="tbProductQuantity" Grid.Column="3" />
+                    <TextBox x:Name="tbProductQuantity" Grid.Column="3" Text="0" />
                     <Button x:Name="btnIncrementQuantity" Click="BtnIncrementQuantity_Click"
                             Grid.Column="4" Content="+" />
 
