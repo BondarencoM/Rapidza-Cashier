@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,37 +25,34 @@ namespace RapidzaCashier
         private IList<Product> AvailableProducts;
         private Order order;
 
+
+        const string PRODUCTS_FILE = "data/products.json";
+
         public MainWindow()
         {
             InitializeComponent();
-            AvailableProducts = new List<Product>();
-            AvailableProducts.Add(new Product("Rancho ",10));
-            AvailableProducts.Add(new Product("Capriciosa ",12));
-            AvailableProducts.Add(new Product("Diablo ",11));
-            AvailableProducts.Add(new Product("Quattro formaggi extra somethin", 9));
-            AvailableProducts.Add(new Product("Margaretta ",8));
-            AvailableProducts.Add(new Product("Hawai ",9));
-            AvailableProducts.Add(new Product("California ",14));
-            AvailableProducts.Add(new Product("Extravaganzza ",9));
-            AvailableProducts.Add(new Product("Metazza ",9));
-            AvailableProducts.Add(new Product("Peperoni ",9));
-            AvailableProducts.Add(new Product("Vegetarian ",9));
+            
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string productsAsJson = File.ReadAllText(PRODUCTS_FILE);
+
+                AvailableProducts = JsonConvert.DeserializeObject<List<Product>>(productsAsJson);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
+
             lwProductsList.ItemsSource = AvailableProducts;
 
             order = new Order();
             lbProductsOrdered.ItemsSource = order.products;
             lblTotalPrice.DataContext = order.TotalPrice;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Product p = new Product("Rancho", "", 4);
-            Order order = new Order();
-            order.Add(p, 10);
-            Console.WriteLine(order.TotalPrice);
-            order.Add(p, 5);
-            Console.WriteLine(order.TotalPrice);
-
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

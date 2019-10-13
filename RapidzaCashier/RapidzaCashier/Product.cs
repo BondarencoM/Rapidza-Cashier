@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +14,13 @@ namespace RapidzaCashier
         public double Price { get; }
         public string PriceString { get => Price + "€"; }
 
-        public Product(string name, string image, double price)
+
+        [JsonConstructor]
+        public Product(string Name, string Image, double Price)
         {
-            Name = name;
-            Image = image;
-            Price = price;
+            this.Name = Name;
+            this.Image = Image;
+            this.Price = Price;
         }
         public Product(string name, double price)
         {

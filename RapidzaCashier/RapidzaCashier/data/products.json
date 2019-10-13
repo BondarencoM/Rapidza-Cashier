@@ -1,0 +1,54 @@
+﻿[
+  {
+    "Name": "Margaretta",
+    "Image": "/res/no image available .png",
+    "Price": 8
+  },
+  {
+    "Name": "Diablo",
+    "Image": "/res/no image available .png",
+    "Price": 11
+  },
+  {
+    "Name": "Rancho",
+    "Image": "/res/no image available .png",
+    "Price": 10
+},
+  {
+    "Name": "Capriciosa",
+    "Image": "/res/no image available .png",
+    "Price": 12
+  },
+  {
+    "Name": "Quattro formaggi extra somethin",
+    "Image": "/res/no image available .png",
+    "Price": 9
+  },
+  {
+    "Name": "Hawai",
+    "Image": "/res/no image available .png",
+    "Price": 8
+  },
+  {
+    "Name": "California",
+    "Image": "/res/no image available .png",
+    "Price": 14
+  },
+  {
+    "Name": "Extravaganzza",
+    "Image": "/res/no image available .png",
+    "Price": 9
+  },
+  {
+    "Name": "Peperoni",
+    "Image": "/res/no image available .png",
+    "Price": 11
+  },  {
+    "Name": "Vegetarian",
+    "Image": "/res/no image available .png",
+    "Price": 10
+  }
+]
+
+ 
+     
