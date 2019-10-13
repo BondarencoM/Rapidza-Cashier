@@ -42,6 +42,7 @@ namespace RapidzaCashier
 
             order = new Order();
             lbProductsOrdered.ItemsSource = order.products;
+            lblTotalPrice.DataContext = order.TotalPrice;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
