@@ -52,7 +52,7 @@ namespace RapidzaCashier
 
             order = new Order();
             lbProductsOrdered.ItemsSource = order.products;
-            lblTotalPrice.DataContext = order.TotalPrice;
+            lblTotalPrice.DataContext = order;
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

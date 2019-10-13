@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RapidzaCashier
 {
-    class Order
+    class Order : INotifyPropertyChanged
     {
         /// <summary>
         /// Dictionarry that maps every product present in the order 
@@ -21,7 +22,19 @@ namespace RapidzaCashier
             products = new Dictionary<Product, int>();
         }
 
-        public void Add(Product product, int count)
+
+        #region INotifyPropertyChanged Members and Methods
+        private void NotifyChangePrice()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TotalPrice"));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+    
+
+    public void Add(Product product, int count)
         {
             if (products.ContainsKey(product))
             {
@@ -31,11 +44,14 @@ namespace RapidzaCashier
             {
                 products[product] = count;
             }
+            NotifyChangePrice();
         }
 
-        public bool Remove(Product product)
+        public void Remove(Product product)
         {
-            return products.Remove(product);
+            products.Remove(product);
+            NotifyChangePrice();
+
         }
     }
 }

@@ -127,7 +127,7 @@
         <Grid Grid.Column="3" Grid.Row="2" >
             <TextBlock Text="Total price: " FontSize="25" />
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <TextBlock x:Name="lblTotalPrice" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=.}"   FontSize="25"  />
+                <TextBlock x:Name="lblTotalPrice" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=TotalPrice}"   FontSize="25"  />
                 <TextBlock Text="€" FontSize="25" />
             </StackPanel>
         </Grid>
