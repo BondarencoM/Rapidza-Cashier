@@ -30,21 +30,17 @@ namespace RapidzaCashier
             AvailableProducts.Add(new Product("Rancho ",10));
             AvailableProducts.Add(new Product("Capriciosa ",12));
             AvailableProducts.Add(new Product("Diablo ",11));
+            AvailableProducts.Add(new Product("Quattro formaggi extra somethin", 9));
             AvailableProducts.Add(new Product("Margaretta ",8));
             AvailableProducts.Add(new Product("Hawai ",9));
-            AvailableProducts.Add(new Product("FOO ",9));
-            AvailableProducts.Add(new Product("BAR ",9));
-            AvailableProducts.Add(new Product("BUZZ ",9));  
-            AvailableProducts.Add(new Product("FLUPKE ",9));
-            AvailableProducts.Add(new Product("FLUPKE ",9));
-            AvailableProducts.Add(new Product("FLUPKE ",9));
-            AvailableProducts.Add(new Product("FLUPKE ",9));
+            AvailableProducts.Add(new Product("California ",14));
+            AvailableProducts.Add(new Product("Extravaganzza ",9));
+            AvailableProducts.Add(new Product("Metazza ",9));
+            AvailableProducts.Add(new Product("Peperoni ",9));
+            AvailableProducts.Add(new Product("Vegetarian ",9));
             lwProductsList.ItemsSource = AvailableProducts;
 
             order = new Order();
-            order.Add(AvailableProducts[0], 1);
-            order.Add(AvailableProducts[1], 2);
-            order.Add(AvailableProducts[4], 1);
             lbProductsOrdered.ItemsSource = order.products;
         }
 
@@ -95,7 +91,8 @@ namespace RapidzaCashier
             var selectedProduct = (Product)lwProductsList.SelectedItem;
             int amount = Convert.ToInt32(tbProductQuantity.Text);
             order.Add(selectedProduct, amount);
-            Console.WriteLine("dd");
+            lbProductsOrdered.Items.Refresh();
         }
+
     }
 }
