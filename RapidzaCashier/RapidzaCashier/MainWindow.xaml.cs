@@ -94,5 +94,11 @@ namespace RapidzaCashier
             lbProductsOrdered.Items.Refresh();
         }
 
+        private void RemoveProductFromOrder(object sender, RoutedEventArgs e)
+        {
+            KeyValuePair<Product, int> data = (KeyValuePair<Product, int>)(sender as Button).DataContext;
+            order.Remove(data.Key);
+            lbProductsOrdered.Items.Refresh();
+        }
     }
 }

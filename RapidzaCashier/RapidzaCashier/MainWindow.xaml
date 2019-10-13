@@ -61,7 +61,7 @@
                         <ColumnDefinition Width="10*"/>
                         <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="4*"/>
@@ -69,7 +69,7 @@
                     <TextBox x:Name="tbSearchProduct" Grid.Column="0" />
                     <Button x:Name="btnDecrementQuantity" Click="BtnDecrementQuantity_Click"
                             Grid.Column="2" Content="-" />
-                    <TextBox x:Name="tbProductQuantity" Grid.Column="3" Text="0" />
+                    <TextBox x:Name="tbProductQuantity" Grid.Column="3" Text="0" HorizontalContentAlignment="Center" />
                     <Button x:Name="btnIncrementQuantity" Click="BtnIncrementQuantity_Click"
                             Grid.Column="4" Content="+" />
 
@@ -109,7 +109,7 @@
                                     </StackPanel>
                                 </Border>
                                 
-                                <Button Grid.Column="1" Content="X" Padding="3 0" />
+                                <Button Grid.Column="1" Content="X" Padding="3 0" Click="RemoveProductFromOrder" />
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
