@@ -15,6 +15,19 @@ namespace RapidzaCashier
         /// </summary>
         public IDictionary<Product, int> products;
 
+        private string _table;
+        public string Table {
+            get
+            {
+                return _table;
+            }
+            set
+            {
+                _table = value;
+                NotifyChange("Table");
+            }
+        }
+
         public double TotalPrice => products.Sum(orderItem => orderItem.Value * orderItem.Key.Price);
 
         public Order()
@@ -24,9 +37,9 @@ namespace RapidzaCashier
 
 
         #region INotifyPropertyChanged Members and Methods
-        private void NotifyChangePrice()
+        private void NotifyChange(string property)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TotalPrice"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -44,13 +57,13 @@ namespace RapidzaCashier
             {
                 products[product] = count;
             }
-            NotifyChangePrice();
+            NotifyChange("TotalPrice");
         }
 
         public void Remove(Product product)
         {
             products.Remove(product);
-            NotifyChangePrice();
+            NotifyChange("TotalPrice");
 
         }
     }

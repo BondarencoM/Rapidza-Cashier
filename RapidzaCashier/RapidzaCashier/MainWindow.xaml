@@ -15,7 +15,7 @@
                 <Setter Property="HorizontalAlignment" Value="Center" />
             </Style>
         </TabControl.Resources>
-        <TabItem Header="Order options" Style="{StaticResource MainWindowTabControlItem}">
+        <TabItem Header="Order options" Style="{StaticResource MainWindowTabControlItem}" >
             <Grid Margin="15 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -95,7 +95,7 @@
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Table number" />
-                            <TextBox Grid.Column="1" />
+                            <TextBox x:Name="tbTable" Text="{Binding Path=Table, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" />
                         </Grid>
                     </Border>
                     <ListBox Grid.Row="1" x:Name="lbProductsOrdered">
@@ -124,7 +124,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <Button Grid.Row="2"  Margin="3 7" HorizontalAlignment="Right"
+                    <Button x:Name="btnSubmitOrder" Click="BtnSubmitOrder_Click" Grid.Row="2"  Margin="3 7" HorizontalAlignment="Right"
                    Content="Submit" FontSize="20" Padding="7 3" />
 
                 </Grid>
@@ -137,10 +137,33 @@
                 </Grid>
             </Grid>
         </TabItem>
-        <TabItem Header="Notifications" Style="{StaticResource MainWindowTabControlItem}" >
-            <Grid>
-                <TextBlock Text="Add notifications" FontSize="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Grid>
+        <TabItem Name="tabReadyOrders"  Header="{Binding Path=Count}" HeaderStringFormat="Waiting orders {0}" Style="{StaticResource MainWindowTabControlItem}" >
+            
+            <ListView Margin="10" x:Name="lwWaitingProducts">
+                <ListView.Resources>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                        <Setter Property="FontSize" Value="30" />
+                    </Style>
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView >
+                        <GridView.ColumnHeaderContainerStyle>
+                            <Style TargetType="GridViewColumnHeader">
+                                <Setter Property="FontSize" Value="25" />
+                            </Style>
+                        </GridView.ColumnHeaderContainerStyle>
+                        <GridViewColumn Width="Auto" TextBlock.FontSize="20" Header="Product" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Width="Auto" Header="Table" DisplayMemberBinding="{Binding Table}" />
+                        <GridViewColumn Width="Auto" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button IsEnabled="{Binding IsReady}" Content="Deliver" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </TabItem>
 
     </TabControl>

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,7 @@ namespace RapidzaCashier
     {
         private IList<Product> AvailableProducts;
         private Order order;
-
+        private IList<WaitingProduct> WaitingProducts;
 
         const string PRODUCTS_FILE = "data/products.json";
 
@@ -39,7 +40,6 @@ namespace RapidzaCashier
             try
             {
                 string productsAsJson = File.ReadAllText(PRODUCTS_FILE);
-
                 AvailableProducts = JsonConvert.DeserializeObject<List<Product>>(productsAsJson);
             }
             catch (Exception ex)
@@ -53,11 +53,16 @@ namespace RapidzaCashier
             order = new Order();
             lbProductsOrdered.ItemsSource = order.products;
             lblTotalPrice.DataContext = order;
+            tbTable.DataContext = order;
+            WaitingProducts = new ObservableCollection<WaitingProduct>();
+
+            tabReadyOrders.DataContext = WaitingProducts;
+            lwWaitingProducts.ItemsSource = WaitingProducts;
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var item = sender as ListViewItem;
+            var item = (ListViewItem)sender;
             var data = (Product)item.DataContext;
             if (data.Name.Equals(tbSearchProduct.Text))
             {
@@ -99,6 +104,17 @@ namespace RapidzaCashier
             KeyValuePair<Product, int> data = (KeyValuePair<Product, int>)(sender as Button).DataContext;
             order.Remove(data.Key);
             lbProductsOrdered.Items.Refresh();
+        }
+
+        private void BtnSubmitOrder_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in order.products)
+                for (int i = 0; i < item.Value; i++)
+                    WaitingProducts.Add(new WaitingProduct(item.Key, order.Table));
+            
+            order.products.Clear();
+            lbProductsOrdered.Items.Refresh();
+            order.Table = "";
         }
     }
 }

@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace RapidzaCashier
 {
-    struct Product
+    class Product
     {
         public string Name { get; }
         public string Image { get; }
         public double Price { get; }
         public string PriceString { get => Price + "€"; }
 
+        protected Product()
+        {
+        }
 
         [JsonConstructor]
         public Product(string Name, string Image, double Price)
