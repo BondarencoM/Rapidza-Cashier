@@ -6,131 +6,143 @@
         xmlns:local="clr-namespace:RapidzaCashier"
         mc:Ignorable="d"
         Title="Rapidza: Cashier" 
-        Height="650" Width="700"
-        MinHeight="650" MinWidth="700"
+        MinHeight="300" MinWidth="700"
         Loaded="Window_Loaded">
-    <Grid Margin="15 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="20"  />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-                
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Column="1" Text="Order view"
-                       FontSize="30" HorizontalAlignment="Center" />
-        
 
-            <ListView x:Name="lwProductsList" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+    <TabControl>
+        <TabControl.Resources>
+            <Style TargetType="{x:Type TabPanel}">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+            </Style>
+        </TabControl.Resources>
+        <TabItem Header="Order options" Style="{StaticResource MainWindowTabControlItem}">
+            <Grid Margin="15 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20"  />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+
+                </Grid.RowDefinitions>
+                
+                <ListView x:Name="lwProductsList" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition SharedSizeGroup="SharedGroup" />
-                            </Grid.RowDefinitions>
-                            <StackPanel>
-                                <Image Source="{Binding Image}" Width="120" Height="90" />
-                                <StackPanel Orientation="Horizontal" >
-                                    <TextBlock TextWrapping="Wrap" MaxWidth="110" Text="{Binding Name}" />
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding PriceString}" />
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition SharedSizeGroup="SharedGroup" />
+                                </Grid.RowDefinitions>
+                                <StackPanel>
+                                    <Image Source="{Binding Image}" Width="120" Height="90" />
+                                    <StackPanel Orientation="Horizontal" >
+                                        <TextBlock TextWrapping="Wrap" MaxWidth="110" Text="{Binding Name}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding PriceString}" />
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel  HorizontalAlignment="Center" Grid.IsSharedSizeScope="True" />
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
-          
-        <Grid Grid.Row="2" Margin="0 10" Grid.ColumnSpan="2">
-            <Grid.ColumnDefinitions >
-                <ColumnDefinition Width="10*"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
-            <TextBox x:Name="tbSearchProduct" Grid.Column="0" />
-            <Button x:Name="btnDecrementQuantity" Click="BtnDecrementQuantity_Click"
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel  HorizontalAlignment="Center" Grid.IsSharedSizeScope="True" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+
+                <Grid Grid.Row="2" Margin="0 10" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="tbSearchProduct" Grid.Column="0" />
+                    <Button x:Name="btnDecrementQuantity" Click="BtnDecrementQuantity_Click"
                             Grid.Column="2" Content="-" />
-            <TextBox x:Name="tbProductQuantity" Grid.Column="3" Text="0" HorizontalContentAlignment="Center" />
-            <Button x:Name="btnIncrementQuantity" Click="BtnIncrementQuantity_Click"
+                    <TextBox x:Name="tbProductQuantity" Grid.Column="3" Text="0" HorizontalContentAlignment="Center" />
+                    <Button x:Name="btnIncrementQuantity" Click="BtnIncrementQuantity_Click"
                             Grid.Column="4" Content="+" />
 
-            <Button x:Name="btnAddProductToOrder" Grid.Column="7" Content="Add" 
+                    <Button x:Name="btnAddProductToOrder" Grid.Column="7" Content="Add" 
                             Margin="10 0 0 0" IsDefault="True" Click="BtnAddProductToOrder_Click" />
 
-        </Grid>
-        <Grid Grid.Column="3" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>    
-            
-            <Border BorderBrush="Black" BorderThickness="1" Padding="5 7">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="8*" />
-                            <ColumnDefinition Width="2*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Table number" />
-                        <TextBox Grid.Column="1" />
-                    </Grid> 
-            </Border>
-            <ListBox Grid.Row="1" x:Name="lbProductsOrdered" MinHeight="200">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
+                </Grid>
+                <Grid Grid.Column="3" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <Border BorderBrush="Black" BorderThickness="1" Padding="5 7">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="8*" />
+                                <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-                            <Border BorderThickness="1" BorderBrush="Gray" Padding="2">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Key.Name}" />
-                                    <TextBlock Text="{Binding Value}" />
-                                </StackPanel>
-                            </Border>
-
-                            <Button Grid.Column="1" Content="X" Padding="3 0" Click="RemoveProductFromOrder" />
+                            <TextBlock Text="Table number" />
+                            <TextBox Grid.Column="1" />
                         </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-  
-           <Button Grid.Row="2"  Margin="3 7" HorizontalAlignment="Right"
-                   Content="Submit" FontSize="20" Padding="7 3" />
-          
-        </Grid>
-        <Grid Grid.Column="3" Grid.Row="2" >
-            <TextBlock Text="Total price: " FontSize="25" />
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <TextBlock x:Name="lblTotalPrice" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=TotalPrice}"   FontSize="25"  />
-                <TextBlock Text="€" FontSize="25" />
-            </StackPanel>
-        </Grid>
-    </Grid>
+                    </Border>
+                    <ListBox Grid.Row="1" x:Name="lbProductsOrdered">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border BorderThickness="1" BorderBrush="Gray" Padding="2">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Key.Name}" />
+                                            <TextBlock Text="{Binding Value}" />
+                                        </StackPanel>
+                                    </Border>
 
+                                    <Button Grid.Column="1" Content="X" Padding="3 0" Click="RemoveProductFromOrder" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Button Grid.Row="2"  Margin="3 7" HorizontalAlignment="Right"
+                   Content="Submit" FontSize="20" Padding="7 3" />
+
+                </Grid>
+                <Grid Grid.Column="3" Grid.Row="2" >
+                    <TextBlock Text="Total price: " FontSize="25" />
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <TextBlock x:Name="lblTotalPrice" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=TotalPrice}"   FontSize="25"  />
+                        <TextBlock Text="€" FontSize="25" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Notifications" Style="{StaticResource MainWindowTabControlItem}" >
+            <Grid>
+                <TextBlock Text="Add notifications" FontSize="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </TabItem>
+
+    </TabControl>
+    
 </Window>
