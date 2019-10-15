@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -48,7 +49,10 @@ namespace RapidzaCashier
                 throw;
             }
 
+
             lwProductsList.ItemsSource = AvailableProducts;
+            ICollectionView view = CollectionViewSource.GetDefaultView(AvailableProducts);
+            view.Filter = this.FilterProductByTextBoxInput;
 
             order = new Order();
             lbProductsOrdered.ItemsSource = order.products;
@@ -58,6 +62,16 @@ namespace RapidzaCashier
 
             tabReadyOrders.DataContext = WaitingProducts;
             lwWaitingProducts.ItemsSource = WaitingProducts;
+
+
+        }
+
+        private bool FilterProductByTextBoxInput(object product)
+        {
+            bool isTextBoxEmpty = string.IsNullOrEmpty(tbSearchProduct.Text);
+            bool productContainsSearchwords = (product as Product).Name.ToLower().Contains(tbSearchProduct.Text.ToLower());
+            Console.WriteLine($"checking: {(product as Product).Name}... bool {productContainsSearchwords} text {tbSearchProduct.Text}");
+            return isTextBoxEmpty || productContainsSearchwords;
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -97,6 +111,8 @@ namespace RapidzaCashier
             int amount = Convert.ToInt32(tbProductQuantity.Text);
             order.Add(selectedProduct, amount);
             lbProductsOrdered.Items.Refresh();
+            tbSearchProduct.Text = "";
+            TbSearchProduct_KeyUp(null, null);
         }
 
         private void RemoveProductFromOrder(object sender, RoutedEventArgs e)
@@ -115,6 +131,12 @@ namespace RapidzaCashier
             order.products.Clear();
             lbProductsOrdered.Items.Refresh();
             order.Table = "";
+        }
+
+        private void TbSearchProduct_KeyUp(object sender, KeyEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(lwProductsList.ItemsSource).Refresh();
+
         }
     }
 }
