@@ -157,10 +157,11 @@
                         </GridView.ColumnHeaderContainerStyle>
                         <GridViewColumn Width="Auto" TextBlock.FontSize="20" Header="Product" DisplayMemberBinding="{Binding Name}" />
                         <GridViewColumn Width="Auto" Header="Table" DisplayMemberBinding="{Binding Table}" />
-                        <GridViewColumn Width="Auto" >
+                        <GridViewColumn Width="100" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button x:Name="btnProductDelivered" IsEnabled="{Binding IsReady}" Content="Deliver" Click="BtnProductDelivered_Click" />
+                                            <Button FontSize="14" Padding="5 0" Click="BtnProductDelivered_Click" 
+                                                    Content="Is delivered" x:Name="btnProductDelivered" Visibility="{Binding Path=IsReady, Converter={StaticResource BoolToVis}}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
