@@ -144,5 +144,11 @@ namespace RapidzaCashier
             WaitingProducts.MarkFirstWaitingProductAsReady();
           
         }
+
+        private void BtnProductDelivered_Click(object sender, RoutedEventArgs e)
+        {
+            var product = (WaitingProduct)(sender as Button).DataContext;
+            WaitingProducts.Remove(product);
+        }
     }
 }
