@@ -137,9 +137,12 @@
                 </Grid>
             </Grid>
         </TabItem>
-        <TabItem Name="tabReadyOrders"  Header="{Binding Path=Count}" HeaderStringFormat="Waiting orders {0}" Style="{StaticResource MainWindowTabControlItem}" >
-            
-            <ListView Margin="10" x:Name="lwWaitingProducts">
+        <TabItem Name="tabReadyOrders"  Header="{Binding Path=ReadyProductsCount}" HeaderStringFormat="Waiting orders ({0} ready)" Style="{StaticResource MainWindowTabControlItem}" >
+            <DockPanel>
+
+                <Button Margin="0 5 0 0" DockPanel.Dock="Top" x:Name="DelmeDebugButton" Click="DelmeDebugButton_Click" Content="Tmp: Simulate signal from arduino" />
+
+                <ListView Margin="10" x:Name="lwWaitingProducts">
                 <ListView.Resources>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                         <Setter Property="FontSize" Value="30" />
@@ -164,6 +167,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+            </DockPanel>
         </TabItem>
 
     </TabControl>

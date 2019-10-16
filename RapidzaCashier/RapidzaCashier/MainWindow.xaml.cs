@@ -26,7 +26,7 @@ namespace RapidzaCashier
     {
         private IList<Product> AvailableProducts;
         private Order order;
-        private IList<WaitingProduct> WaitingProducts;
+        private ObservableWaitingProductsCollection WaitingProducts;
 
         const string PRODUCTS_FILE = "data/products.json";
 
@@ -58,7 +58,7 @@ namespace RapidzaCashier
             lbProductsOrdered.ItemsSource = order.products;
             lblTotalPrice.DataContext = order;
             tbTable.DataContext = order;
-            WaitingProducts = new ObservableCollection<WaitingProduct>();
+            WaitingProducts = new ObservableWaitingProductsCollection();
 
             tabReadyOrders.DataContext = WaitingProducts;
             lwWaitingProducts.ItemsSource = WaitingProducts;
@@ -70,7 +70,6 @@ namespace RapidzaCashier
         {
             bool isTextBoxEmpty = string.IsNullOrEmpty(tbSearchProduct.Text);
             bool productContainsSearchwords = (product as Product).Name.ToLower().Contains(tbSearchProduct.Text.ToLower());
-            Console.WriteLine($"checking: {(product as Product).Name}... bool {productContainsSearchwords} text {tbSearchProduct.Text}");
             return isTextBoxEmpty || productContainsSearchwords;
         }
 
@@ -125,8 +124,7 @@ namespace RapidzaCashier
         private void BtnSubmitOrder_Click(object sender, RoutedEventArgs e)
         {
             foreach (var item in order.products)
-                for (int i = 0; i < item.Value; i++)
-                    WaitingProducts.Add(new WaitingProduct(item.Key, order.Table));
+                WaitingProducts.AddRepeatdly(new WaitingProduct(item.Key, order.Table), times: item.Value);
             
             order.products.Clear();
             lbProductsOrdered.Items.Refresh();
@@ -137,6 +135,14 @@ namespace RapidzaCashier
         {
             CollectionViewSource.GetDefaultView(lwProductsList.ItemsSource).Refresh();
 
+        }
+
+       
+
+        private void DelmeDebugButton_Click(object sender, RoutedEventArgs e)
+        {
+            WaitingProducts.MarkFirstWaitingProductAsReady();
+          
         }
     }
 }

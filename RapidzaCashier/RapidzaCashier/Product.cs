@@ -31,5 +31,11 @@ namespace RapidzaCashier
             Image = "/res/no image available .png";
             Price = price;
         }
+        public Product(Product product)
+        {
+            Name = product.Name;
+            Price = product.Price;
+            Image = product.Image;
+        }
     }
 }

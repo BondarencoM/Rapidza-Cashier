@@ -11,10 +11,17 @@ namespace RapidzaCashier
         public string Table { get; }
         public bool IsReady { get; set; }
 
-        public WaitingProduct(Product product, string table, bool isReady = false ):base(product.Name, product.Image, product.Price)
+        public WaitingProduct(Product product, string table, bool isReady = false ):base(product)
         {
             Table = table;
             IsReady = isReady;
+        }
+
+        public WaitingProduct(WaitingProduct waitingProduct)
+            :base(waitingProduct.Name, waitingProduct.Image,waitingProduct.Price)
+        {
+            Table = waitingProduct.Table;
+            IsReady = waitingProduct.IsReady;
         }
     }
 }
