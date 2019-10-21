@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,9 @@ namespace RapidzaCashier
         /// Dictionarry that maps every product present in the order 
         /// to the ammount of portions ordered 
         /// </summary>
-        public IDictionary<Product, int> products;
+        private IDictionary<Product, int> products;
+
+        public IReadOnlyDictionary<Product, int> Products => new ReadOnlyDictionary<Product, int>(products);
 
         private string _table;
         public string Table {
@@ -45,26 +48,28 @@ namespace RapidzaCashier
             {
                 products[product] = count;
             }
-            NotifyChange("TotalPrice");
+            NotifyChange("TotalPrice", "Products");
         }
 
         public void Remove(Product product)
         {
             products.Remove(product);
-            NotifyChange("TotalPrice");
+            NotifyChange("TotalPrice", "Products");
 
         }
 
         public void Clear()
         {
             products.Clear();
-            NotifyChange("TotalPrice");
+            NotifyChange("TotalPrice", "Products");
+
         }
 
         #region INotifyPropertyChanged Members and Methods
-        private void NotifyChange(string property)
+        private void NotifyChange(params string[] properties)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            foreach(string property in properties)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

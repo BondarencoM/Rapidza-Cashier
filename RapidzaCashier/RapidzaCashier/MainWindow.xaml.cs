@@ -113,7 +113,8 @@ namespace RapidzaCashier
         private void SetOrderItemSource()
         {
             order = new Order();
-            lbProductsOrdered.ItemsSource = order.products;
+            lbProductsOrdered.DataContext = order;
+            
             lblTotalPrice.DataContext = order;
             tbTable.DataContext = order;
         }
@@ -133,25 +134,20 @@ namespace RapidzaCashier
             var selectedProduct = (Product)listViewItem.DataContext;
           
             order.Add(selectedProduct);
-
-            //TODO Find a way to bind data without needing to refresh manually
-            lbProductsOrdered.Items.Refresh();
         }
 
         private void RemoveProductFromOrder(object sender, RoutedEventArgs e)
         {
             var data = (KeyValuePair<Product, int>)(sender as Button).DataContext;
-            order.Remove(data.Key);
-            lbProductsOrdered.Items.Refresh();
+            order.Remove(data.Key);    
         }
 
         private void BtnSubmitOrder_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var product in order.products)
+            foreach (var product in order.Products)
                 WaitingProducts.AddRepeatdly(new WaitingProduct(product.Key, order.Table), times: product.Value);
             
             order.Clear();
-            lbProductsOrdered.Items.Refresh();
             order.Table = "";
         }
 

@@ -103,8 +103,8 @@
                         </Grid>
                     </Border>
                     <!--List of products in this order-->
-                    <ListBox Grid.Row="1" x:Name="lbProductsOrdered"> 
-                        <ListBox.ItemContainerStyle>
+                    <ListBox Grid.Row="1" x:Name="lbProductsOrdered" ItemsSource="{Binding Products}">
+                    <ListBox.ItemContainerStyle>
                             <!--Make every item take the whole with available-->
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
