@@ -11,54 +11,65 @@
 
     <TabControl>
         <TabControl.Resources>
+            <!-- Allign headers to middle -->
             <Style TargetType="{x:Type TabPanel}">
                 <Setter Property="HorizontalAlignment" Value="Center" />
             </Style>
         </TabControl.Resources>
+        
+        <!-- View to make orders -->
         <TabItem Header="Order options" Style="{StaticResource MainWindowTabControlItem}" >
             <Grid Margin="15 0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="20"  />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" /> <!--Products list (listview and search box)-->
+                    <ColumnDefinition Width="20" /> <!-- Just padding -->
+                    <ColumnDefinition Width="*" /> <!--Current order (table, order items, total price) -->
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="10" /> <!-- Just padding -->
+                    <RowDefinition Height="*" /> 
                     <RowDefinition Height="auto" />
-
                 </Grid.RowDefinitions>
                 
+                <!--ListView of all products-->
                 <ListView x:Name="lwProductsList" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       Grid.Column="0"  Grid.Row="1">
+
+                    <!--Product 'card' definition -->
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.RowDefinitions>
+                                    <!-- Make all the cells the same height -->
                                     <RowDefinition SharedSizeGroup="SharedGroup" />
                                 </Grid.RowDefinitions>
                                 <StackPanel>
                                     <Image Source="{Binding Image}" Width="120" Height="90" />
                                     <StackPanel Orientation="Horizontal" >
-                                        <TextBlock TextWrapping="Wrap" MaxWidth="110" Text="{Binding Name}" />
-                                        <TextBlock VerticalAlignment="Center" Text="{Binding PriceString}" />
+                                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="110" />
+                                        <TextBlock Text="{Binding PriceString}" VerticalAlignment="Center" 
+                                                   Margin="4 0 0 0"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                    <ListView.ItemsPanel>
+                    
+                    <!--Wrapp all elements in a wrap panel for responsiveness -->
+                    <ListView.ItemsPanel> 
                         <ItemsPanelTemplate>
                             <WrapPanel  HorizontalAlignment="Center" Grid.IsSharedSizeScope="True" />
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
-                    <ListView.ItemContainerStyle>
+
+                    <!--Add event on click of every element-->
+                    <ListView.ItemContainerStyle> 
                         <Style TargetType="ListViewItem">
                             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
-                <Grid  Grid.Row="2" Margin="0 10" >
+                <Grid  Grid.Row="2" Margin="0 10"> <!--Search bar-->
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
@@ -70,12 +81,13 @@
 
                 <Grid Grid.Column="3" Grid.Row="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" /> <!--Table number -->
+                        <RowDefinition Height="*" /> <!--Products-->
+                        <RowDefinition Height="auto" /> <!--Submit button-->
                     </Grid.RowDefinitions>
 
-                    <Border BorderBrush="Black" BorderThickness="1" Padding="5 7">
+                    <!--Table number-->
+                    <Border BorderBrush="Black" BorderThickness="1" Padding="5 7"> 
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="8*" />
@@ -85,8 +97,10 @@
                             <TextBox x:Name="tbTable" Text="{Binding Path=Table, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" />
                         </Grid>
                     </Border>
-                    <ListBox Grid.Row="1" x:Name="lbProductsOrdered">
+                    <!--List of products in this order-->
+                    <ListBox Grid.Row="1" x:Name="lbProductsOrdered"> 
                         <ListBox.ItemContainerStyle>
+                            <!--Make every item take the whole with available-->
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                             </Style>
@@ -95,9 +109,10 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" /> 
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
+                                    <!--Name and quantity-->
                                     <Border BorderThickness="1" BorderBrush="Gray" Padding="2">
                                         <StackPanel>
                                             <TextBlock Text="{Binding Key.Name}" />
@@ -105,16 +120,18 @@
                                         </StackPanel>
                                     </Border>
 
+                                    <!--Remove Product from order-->
                                     <Button Grid.Column="1" Content="X" Padding="3 0" Click="RemoveProductFromOrder" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-
-                    <Button x:Name="btnSubmitOrder" Click="BtnSubmitOrder_Click" Grid.Row="2"  Margin="3 7" HorizontalAlignment="Right"
-                   Content="Submit" FontSize="20" Padding="7 3" />
-
+                    
+                    <!--Button to submit order-->
+                    <Button Content="Submit"  Grid.Row="2" x:Name="btnSubmitOrder"  Margin="3 7" FontSize="20" 
+                            HorizontalAlignment="Right" Click="BtnSubmitOrder_Click" Padding="7 3" />
                 </Grid>
+                <!--Total price (label, ammount and currency separately)-->
                 <Grid Grid.Column="3" Grid.Row="2" >
                     <TextBlock Text="Total price: " FontSize="25" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
@@ -124,19 +141,29 @@
                 </Grid>
             </Grid>
         </TabItem>
+        
+        <!--List of Waiting products-->
         <TabItem Name="tabReadyOrders"  Header="{Binding Path=ReadyProductsCount}" HeaderStringFormat="Waiting orders ({0} ready)" Style="{StaticResource MainWindowTabControlItem}" >
             <DockPanel>
 
-                <Button Margin="0 5 0 0" DockPanel.Dock="Top" x:Name="DelmeDebugButton" Click="DelmeDebugButton_Click" Content="Tmp: Simulate signal from arduino" />
-
+                <!--This is a temporary button to be removed as soon as
+                    the Aruino is connected to this app-->
+                <Button Margin="0 5 0 0" DockPanel.Dock="Top" x:Name="DelmeDebugButton"
+                        Click="DelmeDebugButton_Click" Content="Temporary: Simulate signal from arduino" />
+                
                 <ListView Margin="10" x:Name="lwWaitingProducts">
+                    
+                <!--Set a bigger font size-->
                 <ListView.Resources>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                         <Setter Property="FontSize" Value="30" />
                     </Style>
                 </ListView.Resources>
+                    
+                <!--GridView definition for waiting products-->
                 <ListView.View>
                     <GridView >
+                        <!--Set bigger fonts for headers-->
                         <GridView.ColumnHeaderContainerStyle>
                             <Style TargetType="GridViewColumnHeader">
                                 <Setter Property="FontSize" Value="25" />
