@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -24,6 +25,7 @@ namespace RapidzaCashier
     /// </summary>
     public partial class MainWindow : Window
     {
+
         private IList<Product> AvailableProducts;
         private Order order;
         private ObservableWaitingProductsCollection WaitingProducts;
@@ -33,46 +35,98 @@ namespace RapidzaCashier
         public MainWindow()
         {
             InitializeComponent();
-            
         }
+
+        #region Window_Loaded
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            TryToReadAvailableProducts();
+            SetFiltertoCollectionView(AvailableProducts, this.FilterProductByTextBoxInput);
+            SetItemSources();   
+        }
+
+        private void TryToReadAvailableProducts()
+        {
             try
             {
-                string productsAsJson = File.ReadAllText(PRODUCTS_FILE);
-                AvailableProducts = JsonConvert.DeserializeObject<List<Product>>(productsAsJson);
+                ReadAvailableProducts();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                throw;
+                DisplayErrorAndExit(ex);
             }
+        }
 
+        private void ReadAvailableProducts()
+        {
+            string productsAsJson = File.ReadAllText(PRODUCTS_FILE);
+            AvailableProducts = JsonConvert.DeserializeObject<List<Product>>(productsAsJson);
+        }
 
-            lwProductsList.ItemsSource = AvailableProducts;
-            ICollectionView view = CollectionViewSource.GetDefaultView(AvailableProducts);
-            view.Filter = this.FilterProductByTextBoxInput;
+        private void DisplayErrorAndExit(Exception ex)
+        {
+            DisplayError(ex.Message);
+            Application.Current.Shutdown();
+        }
 
-            order = new Order();
-            lbProductsOrdered.ItemsSource = order.products;
-            lblTotalPrice.DataContext = order;
-            tbTable.DataContext = order;
-            WaitingProducts = new ObservableWaitingProductsCollection();
+        private void DisplayError(string message)
+        {
+            MessageBox.Show("Rapidza Cashier Error: "+message);
+        }
 
-            tabReadyOrders.DataContext = WaitingProducts;
-            lwWaitingProducts.ItemsSource = WaitingProducts;
-
-
+        private void SetFiltertoCollectionView(IEnumerable target, Predicate<object> filterFunction)
+        {
+            ICollectionView view = CollectionViewSource.GetDefaultView(target);
+            view.Filter = filterFunction;
         }
 
         private bool FilterProductByTextBoxInput(object product)
         {
-            bool isTextBoxEmpty = string.IsNullOrEmpty(tbSearchProduct.Text);
-            bool productContainsSearchwords = (product as Product).Name.ToLower().Contains(tbSearchProduct.Text.ToLower());
-            return isTextBoxEmpty || productContainsSearchwords;
+            return isSearchTextBoxEmpty() || productContainsSearchwords(product as Product);
         }
 
+        private bool isSearchTextBoxEmpty()
+        {
+            return string.IsNullOrEmpty(tbSearchProduct.Text);
+        }
+
+        private bool productContainsSearchwords(Product product)
+        {
+            string productName = product.Name.ToLower();
+            string searchSequence = tbSearchProduct.Text.ToLower();
+            return productName.Contains(searchSequence);
+        }
+
+        private void SetItemSources()
+        {
+            SetAvailableProductsItemSource();
+            SetOrderItemSource();
+            SetWaitingProductsItemSource();
+        }
+
+        private void SetAvailableProductsItemSource()
+        {
+            lwProductsList.ItemsSource = AvailableProducts;
+        }
+
+        private void SetOrderItemSource()
+        {
+            order = new Order();
+            lbProductsOrdered.ItemsSource = order.products;
+            lblTotalPrice.DataContext = order;
+            tbTable.DataContext = order;
+        }
+        private void SetWaitingProductsItemSource()
+        {
+            WaitingProducts = new ObservableWaitingProductsCollection();
+            tabReadyOrders.DataContext = WaitingProducts;
+            lwWaitingProducts.ItemsSource = WaitingProducts;
+        }
+
+        #endregion
+
+        #region Events
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var listViewItem = (ListViewItem)sender;
@@ -82,13 +136,11 @@ namespace RapidzaCashier
 
             //TODO Find a way to bind data without needing to refresh manually
             lbProductsOrdered.Items.Refresh();
-            
-
         }
 
         private void RemoveProductFromOrder(object sender, RoutedEventArgs e)
         {
-            KeyValuePair<Product, int> data = (KeyValuePair<Product, int>)(sender as Button).DataContext;
+            var data = (KeyValuePair<Product, int>)(sender as Button).DataContext;
             order.Remove(data.Key);
             lbProductsOrdered.Items.Refresh();
         }
@@ -106,15 +158,11 @@ namespace RapidzaCashier
         private void TbSearchProduct_KeyUp(object sender, KeyEventArgs e)
         {
             CollectionViewSource.GetDefaultView(lwProductsList.ItemsSource).Refresh();
-
-        }
-
-       
+        }      
 
         private void DelmeDebugButton_Click(object sender, RoutedEventArgs e)
         {
             WaitingProducts.MarkFirstWaitingProductAsReady();
-          
         }
 
         private void BtnProductDelivered_Click(object sender, RoutedEventArgs e)
@@ -125,7 +173,9 @@ namespace RapidzaCashier
 
         private void BtnSearchClear_Click(object sender, RoutedEventArgs e)
         {
-
+            tbSearchProduct.Clear();
+            TbSearchProduct_KeyUp(null, null);
         }
+        #endregion
     }
 }
