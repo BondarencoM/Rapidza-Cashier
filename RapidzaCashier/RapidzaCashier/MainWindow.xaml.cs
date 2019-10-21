@@ -75,43 +75,15 @@ namespace RapidzaCashier
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var item = (ListViewItem)sender;
-            var data = (Product)item.DataContext;
-            if (data.Name.Equals(tbSearchProduct.Text))
-            {
-                BtnIncrementQuantity_Click(null, null);
-            }
-            else
-            {
-                tbSearchProduct.Text = data.Name;
-                tbProductQuantity.Text = "1";
-            }
-        }
+            var listViewItem = (ListViewItem)sender;
+            var selectedProduct = (Product)listViewItem.DataContext;
+          
+            order.Add(selectedProduct);
 
-        private void BtnDecrementQuantity_Click(object sender, RoutedEventArgs e)
-        {
-            var quantity = Convert.ToInt32(tbProductQuantity.Text);
-            quantity--;
-            tbProductQuantity.Text = quantity.ToString();
-        }
-
-        private void BtnIncrementQuantity_Click(object sender, RoutedEventArgs e)
-        {
-            var quantity = Convert.ToInt32(tbProductQuantity.Text);
-            quantity++;
-            tbProductQuantity.Text = quantity.ToString();
-        }
-
-        private void BtnAddProductToOrder_Click(object sender, RoutedEventArgs e)
-        {
-            if (lwProductsList.SelectedItem == null)
-                return;
-            var selectedProduct = (Product)lwProductsList.SelectedItem;
-            int amount = Convert.ToInt32(tbProductQuantity.Text);
-            order.Add(selectedProduct, amount);
+            //TODO Find a way to bind data without needing to refresh manually
             lbProductsOrdered.Items.Refresh();
-            tbSearchProduct.Text = "";
-            TbSearchProduct_KeyUp(null, null);
+            
+
         }
 
         private void RemoveProductFromOrder(object sender, RoutedEventArgs e)
@@ -123,10 +95,10 @@ namespace RapidzaCashier
 
         private void BtnSubmitOrder_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var item in order.products)
-                WaitingProducts.AddRepeatdly(new WaitingProduct(item.Key, order.Table), times: item.Value);
+            foreach (var product in order.products)
+                WaitingProducts.AddRepeatdly(new WaitingProduct(product.Key, order.Table), times: product.Value);
             
-            order.products.Clear();
+            order.Clear();
             lbProductsOrdered.Items.Refresh();
             order.Table = "";
         }

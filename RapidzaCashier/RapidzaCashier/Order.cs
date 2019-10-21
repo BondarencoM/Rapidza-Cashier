@@ -35,19 +35,7 @@ namespace RapidzaCashier
             products = new Dictionary<Product, int>();
         }
 
-
-        #region INotifyPropertyChanged Members and Methods
-        private void NotifyChange(string property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-    
-
-    public void Add(Product product, int count)
+    public void Add(Product product, int count = 1)
         {
             if (products.ContainsKey(product))
             {
@@ -66,5 +54,23 @@ namespace RapidzaCashier
             NotifyChange("TotalPrice");
 
         }
+
+        public void Clear()
+        {
+            products.Clear();
+            NotifyChange("TotalPrice");
+        }
+
+        #region INotifyPropertyChanged Members and Methods
+        private void NotifyChange(string property)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
+
     }
 }

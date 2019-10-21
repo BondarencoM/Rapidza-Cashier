@@ -40,13 +40,24 @@ namespace RapidzaCashier
         public void MarkReady(int index)
         {
             Items[index].IsReady = true;
-            base.OnPropertyChanged(new PropertyChangedEventArgs("ReadyProductsCount"));
-            base.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            NotifyPropertAndCollectionChanged("ReadyProductsCount");
         }
 
         public bool IsReady(int index)
         {
             return Items[index].IsReady;
+        }
+
+        public new void Remove(WaitingProduct product)
+        {
+            base.Remove(product);
+            NotifyPropertAndCollectionChanged("ReadyProductsCount");
+        }
+
+        private void NotifyPropertAndCollectionChanged(string property)
+        {
+            base.OnPropertyChanged(new PropertyChangedEventArgs(property));
+            base.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
     }
