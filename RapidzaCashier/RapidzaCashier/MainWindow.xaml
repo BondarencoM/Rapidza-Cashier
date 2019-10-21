@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:RapidzaCashier"
         mc:Ignorable="d"
         Title="Rapidza: Cashier" 
-        MinHeight="300" MinWidth="700"
+        MinHeight="300" MinWidth="600"
         Loaded="Window_Loaded">
 
     <TabControl>
@@ -21,7 +21,7 @@
         <TabItem Header="Order options" Style="{StaticResource MainWindowTabControlItem}" >
             <Grid Margin="15 0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" /> <!--Products list (listview and search box)-->
+                    <ColumnDefinition Width="2*" /> <!--Products list (listview and search box)-->
                     <ColumnDefinition Width="20" /> <!-- Just padding -->
                     <ColumnDefinition Width="*" /> <!--Current order (table, order items, total price) -->
                 </Grid.ColumnDefinitions>
@@ -73,9 +73,13 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" /> 
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Search: " />
-                    <TextBox Grid.Column="1" x:Name="tbSearchProduct"  KeyUp="TbSearchProduct_KeyUp"  />
+                    <TextBlock Text="Search:" />
+                    <TextBox Grid.Column="1" x:Name="tbSearchProduct"  
+                             KeyUp="TbSearchProduct_KeyUp" Margin="5 0"  />
+                    <Button x:Name="btnSearchClear" Content="X" Grid.Column="2"
+                            Padding="4 0" IsCancel="True" Click="BtnSearchClear_Click" />
                 </Grid>
                 
 
@@ -90,11 +94,12 @@
                     <Border BorderBrush="Black" BorderThickness="1" Padding="5 7"> 
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="8*" />
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Table number" />
-                            <TextBox x:Name="tbTable" Text="{Binding Path=Table, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" />
+                            <TextBox x:Name="tbTable" Text="{Binding Path=Table, Mode=TwoWay}" Grid.Column="2" />
                         </Grid>
                     </Border>
                     <!--List of products in this order-->
@@ -128,17 +133,16 @@
                     </ListBox>
                     
                     <!--Button to submit order-->
-                    <Button Content="Submit"  Grid.Row="2" x:Name="btnSubmitOrder"  Margin="3 7" FontSize="20" 
+                    <Button Content="Submit" IsDefault="True" Grid.Row="2" x:Name="btnSubmitOrder"  Margin="3 7" FontSize="20" 
                             HorizontalAlignment="Right" Click="BtnSubmitOrder_Click" Padding="7 3" />
                 </Grid>
+                
                 <!--Total price (label, ammount and currency separately)-->
-                <Grid Grid.Column="3" Grid.Row="2" >
+                <StackPanel Orientation="Horizontal" Grid.Column="3" Grid.Row="2">
                     <TextBlock Text="Total price: " FontSize="25" />
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                        <TextBlock x:Name="lblTotalPrice" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=TotalPrice}"   FontSize="25"  />
-                        <TextBlock Text="€" FontSize="25" />
-                    </StackPanel>
-                </Grid>
+                    <TextBlock x:Name="lblTotalPrice" Text="{Binding Path=TotalPrice}"   FontSize="25"  />
+                    <TextBlock Text="€" FontSize="25" />
+                </StackPanel>
             </Grid>
         </TabItem>
         
@@ -151,6 +155,7 @@
                 <Button Margin="0 5 0 0" DockPanel.Dock="Top" x:Name="DelmeDebugButton"
                         Click="DelmeDebugButton_Click" Content="Temporary: Simulate signal from arduino" />
                 
+                <!--List of all the available products-->
                 <ListView Margin="10" x:Name="lwWaitingProducts">
                     
                 <!--Set a bigger font size-->

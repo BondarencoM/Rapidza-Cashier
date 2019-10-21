@@ -122,5 +122,10 @@ namespace RapidzaCashier
             var product = (WaitingProduct)(sender as Button).DataContext;
             WaitingProducts.Remove(product);
         }
+
+        private void BtnSearchClear_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
