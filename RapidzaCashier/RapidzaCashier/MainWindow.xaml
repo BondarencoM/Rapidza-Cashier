@@ -176,12 +176,18 @@
                         </GridView.ColumnHeaderContainerStyle>
                         <GridViewColumn Width="Auto" TextBlock.FontSize="20" Header="Product" DisplayMemberBinding="{Binding Name}" />
                         <GridViewColumn Width="Auto" Header="Table" DisplayMemberBinding="{Binding Table}" />
-                        <GridViewColumn Width="100" >
+                        <GridViewColumn Width="135" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                            <Button FontSize="14" Padding="5 0" Click="BtnProductDelivered_Click" 
-                                                    Content="Is delivered" x:Name="btnProductDelivered" Visibility="{Binding Path=IsReady, Converter={StaticResource BoolToVis}}" />
-                                </DataTemplate>
+                                        <Button FontSize="18" Click="BtnProductDelivered_Click" 
+                                                x:Name="btnProductDelivered" Padding="5 0"
+                                                Visibility="{Binding Path=IsReady, Converter={StaticResource BoolToVis}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Ready" VerticalAlignment="Center" />
+                                                <Image Width="22" Source="res/ok gand sign icon .png" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                     </GridView>
