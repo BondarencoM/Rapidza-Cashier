@@ -27,10 +27,10 @@ namespace RapidzaCashier
     {
 
         private IList<Product> AvailableProducts;
-        private Order order;
+        private Order currentOrder;
         private ObservableWaitingProductsCollection WaitingProducts;
 
-        const string PRODUCTS_FILE = "data/products.json";
+        private const string PRODUCTS_FILE = "data/products.json";
 
         public MainWindow()
         {
@@ -112,11 +112,11 @@ namespace RapidzaCashier
 
         private void SetOrderItemSource()
         {
-            order = new Order();
-            lbProductsOrdered.DataContext = order;
+            currentOrder = new Order();
+            lbProductsOrdered.DataContext = currentOrder;
             
-            lblTotalPrice.DataContext = order;
-            tbTable.DataContext = order;
+            lblTotalPrice.DataContext = currentOrder;
+            tbTable.DataContext = currentOrder;
         }
         private void SetWaitingProductsItemSource()
         {
@@ -133,27 +133,32 @@ namespace RapidzaCashier
             var listViewItem = (ListViewItem)sender;
             var selectedProduct = (Product)listViewItem.DataContext;
           
-            order.Add(selectedProduct);
+            currentOrder.Add(selectedProduct);
         }
 
         private void RemoveProductFromOrder(object sender, RoutedEventArgs e)
         {
-            var data = (KeyValuePair<Product, int>)(sender as Button).DataContext;
-            order.Remove(data.Key);    
+            var butonDataContext = (sender as Button).DataContext;
+            var data = (KeyValuePair<Product, int>)butonDataContext;
+            currentOrder.Remove(data.Key);    
         }
 
         private void BtnSubmitOrder_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var product in order.Products)
-                WaitingProducts.AddRepeatdly(new WaitingProduct(product.Key, order.Table), times: product.Value);
+            foreach (var product in currentOrder.Products)
+            {
+                var waitingProduct = new WaitingProduct(product.Key, currentOrder.Table);
+                WaitingProducts.AddRepeatdly(waitingProduct, times: product.Value);
+            }
             
-            order.Clear();
-            order.Table = "";
+            currentOrder.Clear();
+            currentOrder.Table = "";
         }
 
         private void TbSearchProduct_KeyUp(object sender, KeyEventArgs e)
         {
-            CollectionViewSource.GetDefaultView(lwProductsList.ItemsSource).Refresh();
+            var collectionView = CollectionViewSource.GetDefaultView(lwProductsList.ItemsSource);
+            collectionView.Refresh();
         }      
 
         private void DelmeDebugButton_Click(object sender, RoutedEventArgs e)
@@ -170,6 +175,8 @@ namespace RapidzaCashier
         private void BtnSearchClear_Click(object sender, RoutedEventArgs e)
         {
             tbSearchProduct.Clear();
+
+            //Manually Trigger search filtering to show all prodcuts
             TbSearchProduct_KeyUp(null, null);
         }
         #endregion

@@ -27,7 +27,7 @@ namespace RapidzaCashier
             set
             {
                 _table = value;
-                NotifyChange("Table");
+                NotifyPropertyChanged("Table");
             }
         }
 
@@ -48,25 +48,25 @@ namespace RapidzaCashier
             {
                 products[product] = count;
             }
-            NotifyChange("TotalPrice", "Products");
+            NotifyPropertyChanged("TotalPrice", "Products");
         }
 
         public void Remove(Product product)
         {
             products.Remove(product);
-            NotifyChange("TotalPrice", "Products");
+            NotifyPropertyChanged("TotalPrice", "Products");
 
         }
 
         public void Clear()
         {
             products.Clear();
-            NotifyChange("TotalPrice", "Products");
+            NotifyPropertyChanged("TotalPrice", "Products");
 
         }
 
         #region INotifyPropertyChanged Members and Methods
-        private void NotifyChange(params string[] properties)
+        private void NotifyPropertyChanged(params string[] properties)
         {
             foreach(string property in properties)
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));

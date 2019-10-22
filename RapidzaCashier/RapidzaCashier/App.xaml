@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:RapidzaCashier"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        
+        <!--Style for Main menu's header-->
         <Style TargetType="{x:Type TabItem}" x:Key="MainWindowTabControlItem" >
             <Setter Property="Template">
                 <Setter.Value>
