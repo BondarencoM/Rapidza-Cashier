@@ -57,7 +57,11 @@ namespace RapidzaCashier.dto
         private void NotifyPropertAndCollectionChanged(string property)
         {
             base.OnPropertyChanged(new PropertyChangedEventArgs(property));
-            base.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+
+            App.Current.Dispatcher.Invoke(new Action(
+                () => base.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset))
+                ));
+            
         }
 
     }
