@@ -7,28 +7,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RapidzaCashier
+namespace RapidzaCashier.dto
 {
     class ObservableWaitingProductsCollection : ObservableCollection<WaitingProduct>
     {
-        public int ReadyProductsCount => base.Items.Count(product => product.IsReady);
+        public int ReadyProductsCount => Items.Count(product => product.IsReady);
 
         public void AddRepeatdly(WaitingProduct product, int times)
         {
             for (int i = 0; i < times; i++)
             {
-                base.Add(new WaitingProduct(product));
+                Add(new WaitingProduct(product));
             }
         }
 
         public int MarkFirstWaitingProductAsReady(int index = 0)
         {
-            if (index >=base.Count)
+            if (index >= Count)
                 return -1;
 
-            if (!this.IsReady(index))
+            if (!IsReady(index))
             {
-                this.MarkReady(index);
+                MarkReady(index);
                 return index;
             }
             else

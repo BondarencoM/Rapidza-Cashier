@@ -148,13 +148,8 @@
         
         <!--List of Waiting products-->
         <TabItem Name="tabReadyOrders"  Header="{Binding Path=ReadyProductsCount}" HeaderStringFormat="Waiting orders ({0} ready)" Style="{StaticResource MainWindowTabControlItem}" >
-            <DockPanel>
+            <Grid>
 
-                <!--This is a temporary button to be removed as soon as
-                    the Aruino is connected to this app-->
-                <Button Margin="0 5 0 0" DockPanel.Dock="Top" x:Name="DelmeDebugButton"
-                        Click="DelmeDebugButton_Click" Content="Temporary: Simulate signal from arduino" />
-                
                 <!--List of all the available products-->
                 <ListView Margin="10" x:Name="lwWaitingProducts">
                     
@@ -193,9 +188,55 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            </DockPanel>
+            </Grid>
         </TabItem>
+        <TabItem Name="tabConnection" Header="Connection" Style="{StaticResource MainWindowTabControlItem}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="*"/>
 
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0 7">
+                    <TextBlock Text="This Machine's IP = " />
+                    <TextBlock x:Name="lblThisMachineIp" />
+                </StackPanel>
+                <GroupBox Grid.Column="1" Grid.Row="1" Header="Connection to Cook">
+                    <StackPanel>
+
+                        <TextBlock Text="Cook's IP" />
+                        <TextBox x:Name="tbCookIP" Margin="0 0 0 7" TextChanged="tbCookPort_TextChanged" />
+
+                        <TextBlock Text="Connection Port" />
+                        <TextBox x:Name="tbCookPort" Margin="0 0 0 15" TextChanged="tbCookPort_TextChanged"  />
+
+                        <Button x:Name="btnTestCookConnection" Click="btnTestCookConnection_Click" 
+                            Content="Test connection" />
+                    </StackPanel>
+                </GroupBox>
+                
+                <GroupBox Grid.Column="3" Grid.Row="1" Header="Connection to Arduino">
+                    <StackPanel>
+
+                        <TextBlock Text="Connection Port" />
+                        <TextBox x:Name="tbArduinoPort" Margin="0 0 0 15"  />
+
+                        <Button x:Name="btnReestablishArduinoConnection" Click="btnReestablishArduinoConnection_Click"
+                            Content="Save change" />
+
+                    </StackPanel>
+                </GroupBox>
+                
+            </Grid>
+           
+        </TabItem>
     </TabControl>
     
 </Window>

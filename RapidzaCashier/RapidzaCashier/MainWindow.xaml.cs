@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using RapidzaCashier.Connection;
+using RapidzaCashier.dto;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,6 +32,9 @@ namespace RapidzaCashier
         private Order currentOrder;
         private ObservableWaitingProductsCollection WaitingProducts;
 
+        DataSender cookSender;
+        DataReceiver arduinoReceiver;
+
         private const string PRODUCTS_FILE = "data/products.json";
 
         public MainWindow()
@@ -43,7 +48,8 @@ namespace RapidzaCashier
         {
             TryToReadAvailableProducts();
             SetFiltertoCollectionView(AvailableProducts, this.FilterProductByTextBoxInput);
-            SetItemSources();   
+            SetItemSources();
+            SetUpConnection();
         }
 
         private void TryToReadAvailableProducts()
@@ -72,7 +78,7 @@ namespace RapidzaCashier
 
         private void DisplayError(string message)
         {
-            MessageBox.Show("Rapidza Cashier Error: "+message);
+            MessageBox.Show("Rapidza Cashier Error: " + message);
         }
 
         private void SetFiltertoCollectionView(IEnumerable target, Predicate<object> filterFunction)
@@ -114,7 +120,7 @@ namespace RapidzaCashier
         {
             currentOrder = new Order();
             lbProductsOrdered.DataContext = currentOrder;
-            
+
             lblTotalPrice.DataContext = currentOrder;
             tbTable.DataContext = currentOrder;
         }
@@ -125,14 +131,44 @@ namespace RapidzaCashier
             lwWaitingProducts.ItemsSource = WaitingProducts;
         }
 
+        private void SetUpConnection()
+        {
+            SetUpDefaults();
+        }
+
+        private void SetUpDefaults()
+        {
+            lblThisMachineIp.Text = WebConnection.GetLocalIP();
+            //tbArduinoIP.Text = "192.168.178.57";
+            tbArduinoPort.Text = "8081";
+
+            tbCookIP.Text = "192.168.0.102";
+            tbCookPort.Text = "8082";
+
+            arduinoReceiver = new DataReceiver(int.Parse(tbArduinoPort.Text));
+            arduinoReceiver.messageReceived += ReceivedDataFromArduino;
+
+            cookSender = new DataSender(tbCookIP.Text, int.Parse(tbCookPort.Text));
+           
+        }
+
         #endregion
 
         #region Events
+
+        private void ReceivedDataFromArduino(object sender, string message)
+        {
+            if (message.ToLower() == "product_ready")
+            {
+                WaitingProducts.MarkFirstWaitingProductAsReady();
+            }
+        }
+
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var listViewItem = (ListViewItem)sender;
             var selectedProduct = (Product)listViewItem.DataContext;
-          
+
             currentOrder.Add(selectedProduct);
         }
 
@@ -140,30 +176,47 @@ namespace RapidzaCashier
         {
             var butonDataContext = (sender as Button).DataContext;
             var data = (KeyValuePair<Product, int>)butonDataContext;
-            currentOrder.Remove(data.Key);    
+            currentOrder.Remove(data.Key);
         }
 
         private void BtnSubmitOrder_Click(object sender, RoutedEventArgs e)
         {
+            var orderedProducts = new List<OrderedProductDto>();
+
             foreach (var product in currentOrder.Products)
             {
                 var waitingProduct = new WaitingProduct(product.Key, currentOrder.Table);
                 WaitingProducts.AddRepeatdly(waitingProduct, times: product.Value);
+
+                AddItemRepeatedly(orderedProducts, product);
             }
-            
+
+            SendOrdersToCook(orderedProducts);
+
             currentOrder.Clear();
             currentOrder.Table = "";
+        }
+
+
+        private static void AddItemRepeatedly(List<OrderedProductDto> orderedProducts, KeyValuePair<Product, int> products)
+        {
+            for (int i = 0; i < products.Value; i++)
+            {
+                var orderedProductDto = new OrderedProductDto(products.Key.Name, products.Key.Image);
+                orderedProducts.Add(orderedProductDto);
+            }
+        }
+
+        private void SendOrdersToCook(List<OrderedProductDto> orderedProducts)
+        {
+            string message = JsonConvert.SerializeObject(orderedProducts);
+            cookSender.sendMessage(message);
         }
 
         private void TbSearchProduct_KeyUp(object sender, KeyEventArgs e)
         {
             var collectionView = CollectionViewSource.GetDefaultView(lwProductsList.ItemsSource);
             collectionView.Refresh();
-        }      
-
-        private void DelmeDebugButton_Click(object sender, RoutedEventArgs e)
-        {
-            WaitingProducts.MarkFirstWaitingProductAsReady();
         }
 
         private void BtnProductDelivered_Click(object sender, RoutedEventArgs e)
@@ -179,6 +232,31 @@ namespace RapidzaCashier
             //Manually Trigger search filtering to show all prodcuts
             TbSearchProduct_KeyUp(null, null);
         }
+
+        private void btnReestablishArduinoConnection_Click(object sender, RoutedEventArgs e)
+        {
+            arduinoReceiver.close();
+            arduinoReceiver = new DataReceiver(int.Parse(tbArduinoPort.Text));
+
+        }
+
+        private void btnTestCookConnection_Click(object sender, RoutedEventArgs e)
+        {
+            cookSender.sendMessage("ping");
+
+        }
+        private void tbCookPort_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            bool connectionDetailsEmpty = string.IsNullOrEmpty(tbCookPort.Text + tbCookIP.Text);
+            bool isSenderNotSetUp = cookSender == null;
+
+            if (connectionDetailsEmpty || isSenderNotSetUp)
+                return;
+
+            cookSender.setDestination(tbCookIP.Text, int.Parse(tbCookPort.Text));
+        }
+
         #endregion
+
     }
 }

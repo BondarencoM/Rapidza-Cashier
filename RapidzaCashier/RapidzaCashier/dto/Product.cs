@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RapidzaCashier
+namespace RapidzaCashier.dto
 {
     class Product
     {

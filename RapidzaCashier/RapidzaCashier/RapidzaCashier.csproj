@@ -61,8 +61,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ObservableWaitingProductsCollection.cs" />
-    <Compile Include="WaitingProduct.cs" />
+    <Compile Include="dto\ObservableWaitingProductsCollection.cs" />
+    <Compile Include="Connection\DataReceiver.cs" />
+    <Compile Include="Connection\DataSender.cs" />
+    <Compile Include="dto\OrderedProductDto.cs" />
+    <Compile Include="dto\WaitingProduct.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -77,9 +80,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Order.cs" />
-    <Compile Include="OrderProduct.cs" />
-    <Compile Include="Product.cs" />
+    <Compile Include="dto\Order.cs" />
+    <Compile Include="dto\OrderProduct.cs" />
+    <Compile Include="dto\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
