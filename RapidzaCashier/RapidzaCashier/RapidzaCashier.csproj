@@ -66,6 +66,8 @@
     <Compile Include="Connection\DataSender.cs" />
     <Compile Include="dto\OrderedProductDto.cs" />
     <Compile Include="dto\WaitingProduct.cs" />
+    <Compile Include="Connection\WebConnection.cs" />
+    <Compile Include="Connection\WebSocket.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
