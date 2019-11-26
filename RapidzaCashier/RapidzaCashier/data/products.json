@@ -1,51 +1,52 @@
 ﻿[
   {
-    "Name": "Margaretta",
-    "Image": "/res/no image available .png",
+    "Name": "Mssargarita",
+    "Image": "/res/pizzas/margherita.jpg",
     "Price": 8
   },
   {
     "Name": "Diablo",
-    "Image": "/res/no image available .png",
+    "Image": "/res/pizzas/diablo.jpg",
     "Price": 11
   },
   {
     "Name": "Rancho",
-    "Image": "/res/no image available .png",
+    "Image": "/res/pizzas/rancho.jpg",
     "Price": 10
-},
+  },
   {
     "Name": "Capriciosa",
-    "Image": "/res/no image available .png",
+    "Image": "/res/pizzas/capriciosa.jpg",
     "Price": 12
   },
   {
     "Name": "Quattro formaggi extra somethin",
-    "Image": "/res/no image available .png",
+    "Image": "/res/pizzas/quattro.jpg",
     "Price": 9
   },
   {
     "Name": "Hawai",
-    "Image": "/res/no image available .png",
+    "Image": "/res/pizzas/hawaii.jpg",
     "Price": 8
   },
   {
     "Name": "California",
-    "Image": "/res/no image available .png",
+    "Image": "/res/pizzas/california.jpg",
     "Price": 14
   },
   {
     "Name": "Extravaganzza",
-    "Image": "/res/no image available .png",
+    "Image": "/res/pizzas/extravaganzza.jpg",
     "Price": 9
   },
   {
     "Name": "Peperoni",
-    "Image": "/res/no image available .png",
+    "Image": "/res/pizzas/peperoni.jpg",
     "Price": 11
-  },  {
+  },
+  {
     "Name": "Vegetarian",
-    "Image": "/res/no image available .png",
+    "Image": "/res/pizzas/vegetarian.jpg",
     "Price": 10
   }
 ]

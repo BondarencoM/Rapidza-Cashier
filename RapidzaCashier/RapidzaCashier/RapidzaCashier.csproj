@@ -98,6 +98,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="res\pizzas\vegetarian.jpg" />
+    <Resource Include="res\pizzas\california.jpg" />
+    <Resource Include="res\pizzas\peperoni.jpg" />
+    <Resource Include="res\pizzas\extravaganzza.jpg" />
+    <Resource Include="res\pizzas\hawaii.jpg" />
+    <Resource Include="res\pizzas\quattro.jpg" />
+    <Resource Include="res\pizzas\rancho.jpg" />
+    <Resource Include="res\pizzas\margherita.jpg" />
+    <Resource Include="res\pizzas\capriciosa.jpg" />
+    <Resource Include="res\pizzas\diablo.jpg" />
     <Resource Include="res\ok gand sign icon .png" />
     <Resource Include="Rapidza app icon V00 .ico" />
     <EmbeddedResource Include="Properties\Resources.resx">

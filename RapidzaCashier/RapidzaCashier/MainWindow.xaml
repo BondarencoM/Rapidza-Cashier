@@ -44,7 +44,7 @@
                                     <RowDefinition SharedSizeGroup="SharedGroup" />
                                 </Grid.RowDefinitions>
                                 <StackPanel>
-                                    <Image Source="{Binding Image}" Width="120" Height="90" />
+                                    <Image Source="{Binding Image}" Width="150" Height="110" />
                                     <StackPanel Orientation="Horizontal" >
                                         <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="110" />
                                         <TextBlock Text="{Binding PriceString}" VerticalAlignment="Center" 
